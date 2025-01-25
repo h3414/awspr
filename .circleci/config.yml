@@ -8,8 +8,7 @@ jobs:
       - checkout
       - run:
           name: Install npm dependencies
-          command: |
-            npm install --save
+          command: npm install --save
 
   build_docker_image:
     docker:
@@ -21,7 +20,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t reactservapp -t h3414/mynextapp .
+            docker build -t $DOCKER_USERNAME/reactservapp:latest -t $DOCKER_USERNAME/mynextapp:latest .
       - run:
           name: Log in to Docker Hub
           command: |
@@ -29,8 +28,8 @@ jobs:
       - run:
           name: Push Docker image to Docker Hub
           command: |
-            docker push reactservapp
-            docker push h3414/mynextapp
+            docker push $DOCKER_USERNAME/reactservapp:latest
+            docker push $DOCKER_USERNAME/mynextapp:latest
 
 workflows:
   version: 2
