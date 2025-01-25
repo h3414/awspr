@@ -1,0 +1,35 @@
+# Step 1: Build the application
+FROM node:16 AS build
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json (or yarn.lock) to install dependencies
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the Next.js app
+RUN npm run build
+
+# Step 2: Setup production environment
+FROM node:16 AS production
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy only the necessary files from the build stage
+COPY --from=build /app/package.json /app/package-lock.json /app/.next /app/public /app/
+
+# Install only production dependencies
+RUN npm install --production
+
+# Expose the port that the Next.js app will run on
+EXPOSE 3000
+
+# Start the Next.js application in production mode
+CMD ["npm", "start"]
