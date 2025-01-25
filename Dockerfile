@@ -1,5 +1,5 @@
 # Step 1: Build the Next.js app
-FROM node:16 AS build
+FROM node:18 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Step 2: Production stage
-FROM node:16 AS production
+FROM node:18 AS production
 
 # Set the working directory inside the container
 WORKDIR /app
